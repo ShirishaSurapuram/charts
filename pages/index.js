@@ -1,82 +1,261 @@
 import Head from 'next/head'
+import ChartComponent from './charts_component';
 
-export default function Home() {
+
+
+export default function Home({ data }) {
+ 
+  let chartsData = data.charts;
+
+  { console.log(chartsData) }
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
-
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
+    <div className="flex flex-row overflow-hidden">
+       <div><ChartComponent {...chartsData}/></div>
     </div>
   )
+}
+
+
+export async function getServerSideProps() {
+  // Fetch data from external API
+  // const res = await fetch(`https://.../data`)
+  // const data = await res.json()
+
+  // Pass data to the page via props
+  const data = {
+    "page_parameters": {
+      "primary_color": "#007C9D",
+      "secondary_color": "#FFC000",
+      "teritary_colors": "#C3D3DF"
+    },
+    "charts": [
+      {
+        "chart_title": "Patients Registered - Gender wise",
+        "chart_type": "pie",
+        "chart_properties": {
+          "show_toolbox": true
+        },
+        "data": {
+          "labels": [
+            "Female",
+            "Male",
+            "Transgender"
+          ],
+          "y_axis": [
+            56.34,
+            43.65,
+            0.01
+          ]
+        }
+      },
+      {
+        "chart_title": "Patients Registered - Center wise (Top 5)",
+        "chart_type": "line",
+        "chart_properties": {
+          "show_toolbox": true
+        },
+        "data": {
+          "x_axis": [
+            "Sangipur",
+            "Derapur",
+            "Gopiganj",
+            "Karnda",
+            "Aurai_"
+          ],
+          "y_axis": [
+            377,
+            279,
+            278,
+            277,
+            273
+          ]
+        }
+      },
+      {
+        "chart_title": "Consultations' Visit Type Distribution",
+        "chart_type": "bar",
+        "chart_properties": {
+          "show_toolbox": true
+        },
+        "data": {
+          "x_axis": [
+            "NEW",
+            "REPEAT",
+            "REVIEW"
+          ],
+          "y_axis": [
+            69.04912407440852,
+            21.094455481307566,
+            9.85642044428391
+          ]
+        }
+      },
+      {
+        "chart_title": "Top 10 Diagnosis",
+        "chart_type": "bar",
+        "chart_properties": {
+          "show_toolbox": true
+        },
+        "data": {
+          "x_axis": [
+            "SCABIES",
+            "TINEA CORPORIS",
+            "TINEA",
+            "LOW BACK STRAIN",
+            "UPPER RESPIRATORY INFECTION",
+            "UPPER RESPIRATORY TRACT INFECTION",
+            "DIABETES MELLITUS",
+            "ACNE",
+            "TINEA CRURIS",
+            "GASTRITIS"
+          ],
+          "y_axis": [
+            5.83,
+            4.72,
+            3.86,
+            2.66,
+            2.32,
+            1.82,
+            1.8,
+            1.59,
+            1.58,
+            1.52
+          ]
+        }
+      },
+      {
+        "chart_title": "Top 5 Medications Prescribed",
+        "chart_type": "bar",
+        "chart_properties": {
+          "show_toolbox": true
+        },
+        "data": {
+          "x_axis": [
+            "Cetirizine Dihydrochloride Tablet",
+            "Omeprazole Capsule",
+            "Paracetamol Tablet",
+            "Clotrimazole Cream",
+            "Aceclofinac Tablet"
+          ],
+          "y_axis": [
+            12.02,
+            9.48,
+            7.12,
+            6.36,
+            5.19
+          ]
+        }
+      },
+      {
+        "chart_title": "Top 5 Lab Investigations",
+        "chart_type": "bar",
+        "chart_properties": {
+          "show_toolbox": true
+        },
+        "data": {
+          "x_axis": [
+            "Random Blood Glucose",
+            "Fasting Blood Glucose",
+            "Post Prandial Blood Glucose",
+            "ECG",
+            "Fetal heart Rate",
+            "STETH"
+          ],
+          "y_axis": [
+            42.97,
+            19.39,
+            17.31,
+            15.56,
+            4.67,
+            0.1
+          ]
+        }
+      },
+      {
+        "chart_title": "Specialitywise Consultations",
+        "chart_type": "bar",
+        "chart_properties": {
+          "show_toolbox": true
+        },
+        "data": {
+          "x_axis": [
+            "Cardiology",
+            "Dermatology",
+            "Endocrinology",
+            "Gastroenterology",
+            "General Medicine",
+            "Nephrology",
+            "Neurology",
+            "Obstetrics & Gynaecology",
+            "Oncologist",
+            "Orthopaedics",
+            "Paediatrics",
+            "Physical Medicine & Rehabilitation",
+            "Urology"
+          ],
+          "y_axis": [
+            1.06,
+            29.15,
+            2.62,
+            1.03,
+            23.36,
+            0.21,
+            1.03,
+            12.8,
+            0.09,
+            14.25,
+            13.23,
+            0.7,
+            0.47
+          ]
+        }
+      },
+      {
+        "chart_title": "Districtwise Consultations",
+        "chart_type": "bar",
+        "chart_properties": {
+          "show_toolbox": true
+        },
+        "data": {
+          "x_axis": [
+            "Allahabad",
+            "Chandauli",
+            "Chitrakoot",
+            "Fatehpur",
+            "Ghazipur",
+            "HAMIRPUR",
+            "Jaunpur",
+            "Kanpur Dehat",
+            "Kaushambi",
+            "Mirzapur",
+            "Pratapgarh",
+            "Sant Ravidas Nagar (Bhadohi)",
+            "Sonbhadra",
+            "Varanasi"
+          ],
+          "y_axis": [
+            3142,
+            1147,
+            974,
+            1271,
+            2028,
+            921,
+            2217,
+            1604,
+            1000,
+            1153,
+            2462,
+            1043,
+            756,
+            1491
+          ]
+        }
+      }
+    ]
+  }
+
+  return { props: { data } }
+
+
 }
